@@ -67,7 +67,7 @@ body {
   font-family: 'Poppins', sans-serif;
   color: var(--text);
   background: var(--bg-gradient);
-  min-height: 100vh;
+  min-block-size: 20vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -79,12 +79,12 @@ body {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-block-end: 20px;
 }
 
 .logo {
-  width: 50px;
-  height: 50px;
+  inline-size: 50px;
+  block-size: 50px;
 }
 
 h1 {
@@ -96,10 +96,10 @@ h1 {
   background: transparent;
   border: 2px solid var(--input-border);
   color: var(--text);
-  width: 100%;
-  max-width: 800px;
+  inline-size: 100%;
+  max-inline-size: 800px;
   padding: 12px;
-  margin-bottom: 10px;
+  margin-block-end: 10px;
   border-radius: 12px;
   font-size: 16px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.1);
@@ -116,7 +116,7 @@ h1 {
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-block-end: 12px;
 }
 
 select,
@@ -128,7 +128,7 @@ input[type="datetime-local"] {
   border-radius: 12px;
   font-size: 16px;
   flex: 1;
-  min-width: 140px;
+  min-inline-size: 140px;
 }
 
 button {
@@ -154,8 +154,8 @@ ul {
   list-style: none;
   padding: 0;
   margin: 20px 0;
-  width: 100%;
-  max-width: 800px;
+  inline-size: 100%;
+  max-inline-size: 800px;
 }
 
 li {
@@ -180,7 +180,7 @@ li.completed {
 .actions {
   display: flex;
   gap: 6px;
-  margin-top: 8px;
+  margin-block-start: 8px;
 }
 
 .actions button {
@@ -212,16 +212,16 @@ li.completed {
 .progress-bar {
   background: rgba(0,0,0,0.1);
   border-radius: 8px;
-  height: 10px;
-  width: 100%;
-  max-width: 800px;
+  block-size: 10px;
+  inline-size: 100%;
+  max-inline-size: 800px;
   margin: 8px auto;
   overflow: hidden;
 }
 
 #progressFill {
-  height: 100%;
-  width: 0%;
+  block-size: 100%;
+  inline-size: 0%;
   background: var(--primary);
   transition: width 0.3s;
 }
@@ -229,9 +229,9 @@ li.completed {
   background: rgba(255,255,255,0.95);
   border-radius: 16px;
   padding: 20px;
-  width: 100%;
-  max-width: 800px;
-  margin-top: 20px;
+  inline-size: 100%;
+  max-inline-size: 800px;
+  margin-block-start: 20px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
 
@@ -240,14 +240,14 @@ body.dark .task-card {
 }
 
 .task-list-wrapper {
-  max-height: 300px; /* scrollable area */
+  max-block-size: 300px; 
   overflow-y: auto;
-  margin-top: 10px;
-  padding-right: 6px;
+  margin-block-start: 10px;
+  padding-inline-end: 6px;
 }
 
 .task-list-wrapper::-webkit-scrollbar {
-  width: 8px;
+  inline-size: 8px;
 }
 .task-list-wrapper::-webkit-scrollbar-thumb {
   background: var(--primary);
@@ -259,7 +259,7 @@ body.dark .task-card {
 
 
 .theme-toggle {
-  margin-top: 10px;
+  margin-block-start:  10px;
   font-size: 14px;
 }
 
@@ -271,7 +271,7 @@ body.dark .task-card {
   border-radius: 12px;
   font-size: 18px;
   font-weight: 700;
-  margin-top: 20px;
+  margin-block-start: 20px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -282,13 +282,13 @@ body.dark .task-card {
 }
 
 #timetable {
-  margin-top: 25px;
+  margin-block-start: 25px;
   overflow-x: auto;
   padding: 15px;
   border-radius: 16px;
   background: rgba(255,255,255,0.9);
   box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  max-width: 100%;
+  max-inline-size: 100%;
 }
 
 body.dark #timetable {
@@ -300,7 +300,7 @@ body.dark #timetable {
   text-align: center;
   font-size: 26px;
   font-weight: 800;
-  margin-bottom: 15px;
+  margin-block-end: 15px;
   color: #333;
 }
 
@@ -310,8 +310,8 @@ body.dark #timetable h3 {
 
 .timetable-table {
   border-collapse: collapse;
-  width: 100%;
-  min-width: 600px;
+  inline-size: 100%;
+  min-inline-size: 600px;
 }
 
 .timetable-table th,
@@ -334,7 +334,6 @@ body.dark #timetable h3 {
   font-weight: 700;
 }
 
-/* ✅ changed to black text in dark mode for better visibility */
 body.dark .timetable-table th {
   background: #555;
   color: #000;
@@ -348,7 +347,7 @@ body.dark .timetable-table td:first-child {
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin-top: 15px;
+  margin-block-end: 15px;
   flex-wrap: wrap;
 }
 
@@ -391,8 +390,8 @@ body.dark .timetable-table td:first-child {
   color: var(--text);
   padding: 25px;
   border-radius: 14px;
-  max-width: 350px;
-  width: 90%;
+  max-inline-size: 350px;
+  inline-size: 90%;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
@@ -400,10 +399,10 @@ body.dark .timetable-table td:first-child {
 .modal-actions {
   display: flex;
   gap: 8px;
-  margin-top: 20px;
+  margin-block-start: 20px;
 }
 
-.save-btn {
+.save-btn{
   background: var(--btn-save);
   flex: 1;
 }
@@ -420,11 +419,11 @@ body.dark .timetable-table td:first-child {
 
 canvas#confettiCanvas {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
   pointer-events: none;
-  width: 100vw;
-  height: 100vh;
+  inline-size: 100vw;
+  block-size: 100vh;
   z-index: 9999;
 }
 
