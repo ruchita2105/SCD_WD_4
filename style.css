@@ -1,0 +1,445 @@
+:root {
+  --bg-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  --text: #222;
+  --primary: #7E57C2;
+  --done: #43A047;
+  --edit: #FFA000;
+  --delete: #E53935;
+  --btn-save: #4CAF50;
+  --btn-yes: #2196F3;
+  --btn-cancel: #9E9E9E;
+  --input-bg: rgba(255,255,255,0.6);
+  --input-border: rgba(0,0,0,0.2);
+}
+
+body.dark {
+  --bg-gradient: linear-gradient(135deg, #000000 0%, #1c0034 100%);
+  --text: #f9f9f9;
+  --primary: #9c7bff;
+  --done: #4caf50;
+  --edit: #ffb84d;
+  --delete: #ff6b6b;
+  --btn-save: #66bb6a;
+  --btn-yes: #7aa9f7;
+  --btn-cancel: #88888831;
+  --input-bg: rgba(0,0,0,0.7);
+  --input-border: rgba(255,255,255,0.2);
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background: #2c2c2c;
+  color: #e0e0e0;
+  border: 1px solid #555;
+}
+
+body.dark input::placeholder,
+body.dark select::placeholder {
+  color: #aaa;
+}
+body.dark li {
+  background: #333;            
+  color: #fff;            
+}
+
+body.dark li.completed {
+  background: var(--done);     
+  color: #fff;
+}
+
+body.dark li small {
+  color: #ddd;              
+}
+
+body.dark .actions button.complete {
+  background: var(--done);
+}
+body.dark .actions button.edit {
+  background: var(--edit);
+}
+body.dark .actions button.delete {
+  background: var(--delete);
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  color: var(--text);
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.search-bar {
+  background: transparent;
+  border: 2px solid var(--input-border);
+  color: var(--text);
+  width: 100%;
+  max-width: 800px;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  font-size: 16px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.search-bar::placeholder {
+  color: var(--text);
+  opacity: 0.6;
+}
+
+.category-row,
+.input-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+select,
+input[type="text"],
+input[type="datetime-local"] {
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 16px;
+  flex: 1;
+  min-width: 140px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+#addBtn {
+  background: var(--primary);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 800px;
+}
+
+li {
+  background: rgba(255,255,255,0.85);
+  color: var(--text);
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+li.completed {
+  text-decoration: line-through;
+  background: var(--done);
+  color: #fff;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.actions button {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  border-radius: 6px;
+}
+
+.actions .complete {
+  background: var(--done);
+}
+
+.actions .edit {
+  background: var(--edit);
+}
+
+.actions .delete {
+  background: var(--delete);
+}
+
+.progress-container {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.progress-bar {
+  background: rgba(0,0,0,0.1);
+  border-radius: 8px;
+  height: 10px;
+  width: 100%;
+  max-width: 800px;
+  margin: 8px auto;
+  overflow: hidden;
+}
+
+#progressFill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+  transition: width 0.3s;
+}
+.task-card {
+  background: rgba(255,255,255,0.95);
+  border-radius: 16px;
+  padding: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin-top: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+body.dark .task-card {
+  background: rgba(0,0,0,0.6);
+}
+
+.task-list-wrapper {
+  max-height: 300px; /* scrollable area */
+  overflow-y: auto;
+  margin-top: 10px;
+  padding-right: 6px;
+}
+
+.task-list-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+.task-list-wrapper::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+.task-list-wrapper::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1);
+}
+
+
+.theme-toggle {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+#generateTimetable {
+  background: linear-gradient(45deg, #ff6f61, #ff9472);
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#generateTimetable:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+}
+
+#timetable {
+  margin-top: 25px;
+  overflow-x: auto;
+  padding: 15px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  max-width: 100%;
+}
+
+body.dark #timetable {
+  background: rgba(0,0,0,0.8);
+  color: #f1f1f1;
+}
+
+#timetable h3 {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+body.dark #timetable h3 {
+  color: #e0e0e0;
+}
+
+.timetable-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 600px;
+}
+
+.timetable-table th,
+.timetable-table td {
+  border: 1px solid #888;
+  padding: 6px 8px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.timetable-table th {
+  background: #ffb6c1;
+  color: #222;
+  font-weight: 700;
+}
+
+.timetable-table td:first-child {
+  background: #add8e6;
+  font-weight: 700;
+}
+
+/* ✅ changed to black text in dark mode for better visibility */
+body.dark .timetable-table th {
+  background: #555;
+  color: #000;
+}
+body.dark .timetable-table td:first-child {
+  background: #555;
+  color: #000;
+}
+
+.timetable-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.timetable-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.timetable-actions button:hover {
+  transform: scale(1.05);
+}
+
+#saveImage {
+  background: linear-gradient(45deg, #43a047, #66bb6a);
+}
+
+#copyImage {
+  background: linear-gradient(45deg, #42a5f5, #478ed1);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: var(--input-bg);
+  color: var(--text);
+  padding: 25px;
+  border-radius: 14px;
+  max-width: 350px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.save-btn {
+  background: var(--btn-save);
+  flex: 1;
+}
+
+.yes-btn {
+  background: var(--btn-yes);
+  flex: 1;
+}
+
+.cancel-btn {
+  background: var(--btn-cancel);
+  flex: 1;
+}
+
+canvas#confettiCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 24px;
+  }
+  button {
+    font-size: 14px;
+    padding: 10px;
+  }
+  .timetable-table th,
+  .timetable-table td {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+

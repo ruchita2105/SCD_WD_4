@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super To‑Do App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <img src="https://img.icons8.com/emoji/48/check-mark-button-emoji.png" class="logo" alt="logo">
+    <h1>My To‑Do</h1>
+  </header>
+
+  <!-- Search -->
+  <input id="searchInput" class="search-bar" type="text" placeholder="🔍 Search tasks...">
+  <select id="filterSelect" class="search-bar">
+    <option>All</option>
+    <option>Meeting</option>
+    <option>Reminder</option>
+    <option>Deadline</option>
+    <option>Free Time</option>
+  </select>
+  
+  <!-- Add Task -->
+  <div class="input-row">
+    <input id="taskInput" type="text" placeholder="Enter a task">
+    <input id="taskDate" type="datetime-local">
+    <select id="categoryInput">
+      <option>Work</option>
+      <option>Personal</option>
+      <option>Study</option>
+    </select>
+    <button id="addBtn">Add</button>
+  </div>
+
+  <!-- Card wrapper -->
+  <div class="tasks-card">
+    <!-- Progress -->
+    <div class="progress-container">
+      <p id="progressText">0 of 0 completed</p>
+      <div class="progress-bar"><div id="progressFill"></div></div>
+    </div>
+
+    <!-- Scrollable Task List -->
+    <div class="task-list-wrapper">
+      <ul id="taskList"></ul>
+    </div>
+  </div>
+
+  <!-- Dark Mode -->
+  <div class="theme-toggle">
+    Dark Mode <input type="checkbox" id="themeSwitch">
+  </div>
+
+  <!-- Timetable -->
+  <button id="generateTimetable">Generate Timetable</button>
+  <div id="timetable" class="hidden">
+    <table class="timetable-table" id="timetableTable"></table>
+    <div class="timetable-actions">
+      <button id="saveImage">💾</button>
+      <button id="copyImage">📋</button>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <h3>Edit Task</h3>
+      <input type="text" id="editInput">
+      <div class="modal-actions">
+        <button class="save-btn" id="saveEdit">Save</button>
+        <button class="cancel-btn" id="cancelEdit">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <h3>Delete this task?</h3>
+      <div class="modal-actions">
+        <button class="yes-btn" id="confirmDelete">Yes</button>
+        <button class="cancel-btn" id="cancelDelete">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="confettiCanvas"></canvas>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
