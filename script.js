@@ -37,13 +37,12 @@ function saveTasks() {
 // Render tasks
 function renderTasks() {
   taskList.innerHTML = "";
-// Get search value
+  // Get search value
   const searchVal = searchInput.value.toLowerCase();
 
   tasks.forEach((t, i) => {
     // Apply filters
     if (!t.text.toLowerCase().includes(searchVal)) return;
-
 
     const li = document.createElement("li");
     if (t.done) li.classList.add("completed");
@@ -106,7 +105,7 @@ addBtn.onclick = () => {
 
   tasks.push(newTask);
   saveTasks();
-  renderTasks(); 
+  renderTasks();
 
   // Reset fields
   taskInput.value = "";
@@ -143,80 +142,58 @@ themeSwitch.onchange = () => {
   document.body.classList.toggle("dark", themeSwitch.checked);
 };
 
-// Generate timetable
+// Initial render
+document.addEventListener("DOMContentLoaded", renderTasks);
+
+// Timetable generation
+
 timetableBtn.onclick = () => {
-  timetableBtn.onclick = () => {
   timetableDiv.classList.remove("hidden");
   timetableTable.innerHTML = "";
 
+  // days header
   const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  let header = `<tr><th>Time</th>${days.map(d=>`<th>${d}</th>`).join("")}</tr>`;
+  let header = "<tr><th>Time</th>" + days.map(d => `<th>${d}</th>`).join("") + "</tr>";
   timetableTable.insertAdjacentHTML("beforeend", header);
 
+  // rows for 24h
   for (let h = 0; h < 24; h++) {
-    let slot = ("0"+h).slice(-2)+":00";
+    let slot = ("0" + h).slice(-2) + ":00";
     let row = `<tr><td>${slot}</td>`;
     days.forEach(day => {
-      const match = tasks.find(t => {
+      let cellTask = tasks.find(t => {
         if (!t.date) return false;
-        const d = new Date(t.date);
-        return d.toLocaleDateString('en-US',{weekday:'long'})===day &&("0"+d.getHours()).slice(-2)+":00" === slot;
+        let d = new Date(t.date);
+        let dayName = d.toLocaleDateString("en-US", { weekday: "long" });
+        let hr = ("0" + d.getHours()).slice(-2) + ":00";
+        return dayName === day && hr === slot;
       });
-      row += `<td>${match?match.text:""}</td>`;
+      row += `<td>${cellTask ? cellTask.text : ""}</td>`;
     });
-    row += `</tr>`;
+    row += "</tr>";
     timetableTable.insertAdjacentHTML("beforeend", row);
   }
 };
 
+//  Save timetable as image
 saveImageBtn.onclick = () => {
-  html2canvas(timetableDiv).then(canvas=>{
-    let link=document.createElement('a');
-    link.download="timetable.png";
-    link.href=canvas.toDataURL();
+  html2canvas(timetableDiv).then(canvas => {
+    let link = document.createElement("a");
+    link.download = "timetable.png";
+    link.href = canvas.toDataURL();
     link.click();
   });
 };
 
+//  Copy timetable image to clipboard
 copyImageBtn.onclick = async () => {
   try {
     const canvas = await html2canvas(timetableDiv);
-    const blob = await new Promise(res=>canvas.toBlob(res));
-    await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);
-    alert("Timetable copied!");
-  } catch(e){alert("Copy failed.");}
+    const blob = await new Promise(res => canvas.toBlob(res));
+    await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+    alert("📋 Timetable copied to clipboard!");
+  } catch (e) {
+    console.error(e);
+    alert("Copy failed. Please try saving instead.");
+  }
 };
-
-function triggerConfetti() {
-  const canvas = document.getElementById("confettiCanvas");
-  const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  canvas.style.display = "block";
-  const parts = Array.from({length:100},()=>({
-    x: Math.random()*canvas.width,
-    y: Math.random()*-canvas.height,
-    r: Math.random()*6+2,
-    dx: Math.random()*2-1,
-    dy: Math.random()*2+1,
-    color:`hsl(${Math.random()*360},70%,60%)`
-  }));
-  let frame=0;
-  (function anim(){
-    frame++;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    parts.forEach(p=>{
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=p.color;
-      ctx.fill();
-      p.x+=p.dx; p.y+=p.dy;
-      if(p.y>canvas.height){p.y=-10; p.x=Math.random()*canvas.width;}
-    });
-    if(frame<120) requestAnimationFrame(anim);
-    else canvas.style.display="none";
-  })();
-// Initial render
-document.addEventListener("DOMContentLoaded", renderTasks);
-}
-}
