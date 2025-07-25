@@ -1,444 +1,222 @@
-:root {
-  --bg-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-  --text: #222;
-  --primary: #7E57C2;
-  --done: #43A047;
-  --edit: #FFA000;
-  --delete: #E53935;
-  --btn-save: #4CAF50;
-  --btn-yes: #2196F3;
-  --btn-cancel: #9E9E9E;
-  --input-bg: rgba(255,255,255,0.6);
-  --input-border: rgba(0,0,0,0.2);
+// Load tasks 
+let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+let editIndex = null;
+let deleteIndex = null;
+
+// DOM elements
+const taskInput = document.getElementById("taskInput");
+const taskDate = document.getElementById("taskDate");
+const categoryInput = document.getElementById("categoryInput");
+const addBtn = document.getElementById("addBtn");
+const taskList = document.getElementById("taskList");
+const searchInput = document.getElementById("searchInput");
+const progressText = document.getElementById("progressText");
+const progressFill = document.getElementById("progressFill");
+const themeSwitch = document.getElementById("themeSwitch");
+
+const editModal = document.getElementById("editModal");
+const editInput = document.getElementById("editInput");
+const saveEdit = document.getElementById("saveEdit");
+const cancelEdit = document.getElementById("cancelEdit");
+
+const deleteModal = document.getElementById("deleteModal");
+const confirmDelete = document.getElementById("confirmDelete");
+const cancelDelete = document.getElementById("cancelDelete");
+
+const timetableBtn = document.getElementById("generateTimetable");
+const timetableDiv = document.getElementById("timetable");
+const timetableTable = document.getElementById("timetableTable");
+const saveImageBtn = document.getElementById("saveImage");
+const copyImageBtn = document.getElementById("copyImage");
+
+// Save to localStorage
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-body.dark {
-  --bg-gradient: linear-gradient(135deg, #000000 0%, #1c0034 100%);
-  --text: #f9f9f9;
-  --primary: #9c7bff;
-  --done: #4caf50;
-  --edit: #ffb84d;
-  --delete: #ff6b6b;
-  --btn-save: #66bb6a;
-  --btn-yes: #7aa9f7;
-  --btn-cancel: #88888831;
-  --input-bg: rgba(0,0,0,0.7);
-  --input-border: rgba(255,255,255,0.2);
-}
+// Render tasks
+function renderTasks() {
+  taskList.innerHTML = "";
+// Get search value
+  const searchVal = searchInput.value.toLowerCase();
 
-body.dark input,
-body.dark select,
-body.dark textarea {
-  background: #2c2c2c;
-  color: #e0e0e0;
-  border: 1px solid #555;
-}
-
-body.dark input::placeholder,
-body.dark select::placeholder {
-  color: #aaa;
-}
-body.dark li {
-  background: #333;            
-  color: #fff;            
-}
-
-body.dark li.completed {
-  background: var(--done);     
-  color: #fff;
-}
-
-body.dark li small {
-  color: #ddd;              
-}
-
-body.dark .actions button.complete {
-  background: var(--done);
-}
-body.dark .actions button.edit {
-  background: var(--edit);
-}
-body.dark .actions button.delete {
-  background: var(--delete);
-}
-
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  color: var(--text);
-  background: var(--bg-gradient);
-  min-block-size: 20vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-
-.app-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-block-end: 20px;
-}
-
-.logo {
-  inline-size: 50px;
-  block-size: 50px;
-}
-
-h1 {
-  font-size: 32px;
-  font-weight: 700;
-}
-
-.search-bar {
-  background: transparent;
-  border: 2px solid var(--input-border);
-  color: var(--text);
-  inline-size: 100%;
-  max-inline-size: 800px;
-  padding: 12px;
-  margin-block-end: 10px;
-  border-radius: 12px;
-  font-size: 16px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-}
-
-.search-bar::placeholder {
-  color: var(--text);
-  opacity: 0.6;
-}
-
-.category-row,
-.input-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-block-end: 12px;
-}
-
-select,
-input[type="text"],
-input[type="datetime-local"] {
-  background: var(--input-bg);
-  border: 2px solid var(--input-border);
-  padding: 12px;
-  border-radius: 12px;
-  font-size: 16px;
-  flex: 1;
-  min-inline-size: 140px;
-}
-
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 12px;
-  padding: 12px 18px;
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  transition: 0.3s;
-}
-
-button:hover {
-  transform: scale(1.05);
-}
-
-#addBtn {
-  background: var(--primary);
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
-  inline-size: 100%;
-  max-inline-size: 800px;
-}
-
-li {
-  background: rgba(255,255,255,0.85);
-  color: var(--text);
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-li.completed {
-  text-decoration: line-through;
-  background: var(--done);
-  color: #fff;
-}
-
-.actions {
-  display: flex;
-  gap: 6px;
-  margin-block-start: 8px;
-}
-
-.actions button {
-  padding: 8px 12px;
-  font-size: 14px;
-  color: #fff;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  border-radius: 6px;
-}
-
-.actions .complete {
-  background: var(--done);
-}
-
-.actions .edit {
-  background: var(--edit);
-}
-
-.actions .delete {
-  background: var(--delete);
-}
-
-.progress-container {
-  margin: 15px 0;
-  text-align: center;
-}
-
-.progress-bar {
-  background: rgba(0,0,0,0.1);
-  border-radius: 8px;
-  block-size: 10px;
-  inline-size: 100%;
-  max-inline-size: 800px;
-  margin: 8px auto;
-  overflow: hidden;
-}
-
-#progressFill {
-  block-size: 100%;
-  inline-size: 0%;
-  background: var(--primary);
-  transition: width 0.3s;
-}
-.task-card {
-  background: rgba(255,255,255,0.95);
-  border-radius: 16px;
-  padding: 20px;
-  inline-size: 100%;
-  max-inline-size: 800px;
-  margin-block-start: 20px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-}
-
-body.dark .task-card {
-  background: rgba(0,0,0,0.6);
-}
-
-.task-list-wrapper {
-  max-block-size: 300px; 
-  overflow-y: auto;
-  margin-block-start: 10px;
-  padding-inline-end: 6px;
-}
-
-.task-list-wrapper::-webkit-scrollbar {
-  inline-size: 8px;
-}
-.task-list-wrapper::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border-radius: 4px;
-}
-.task-list-wrapper::-webkit-scrollbar-track {
-  background: rgba(0,0,0,0.1);
-}
+  tasks.forEach((t, i) => {
+    // Apply filters
+    if (!t.text.toLowerCase().includes(searchVal)) return;
 
 
-.theme-toggle {
-  margin-block-start:  10px;
-  font-size: 14px;
+    const li = document.createElement("li");
+    if (t.done) li.classList.add("completed");
+
+    li.innerHTML = `
+      <span>
+        <strong>${t.text}</strong><br>
+        <small>${t.cat}${t.date ? " – " + new Date(t.date).toLocaleString() : ""}</small>
+      </span>
+      <div class="actions">
+        <button class="complete">✔</button>
+        <button class="edit">✎</button>
+        <button class="delete">🗑</button>
+      </div>
+    `;
+
+    // Mark complete
+    li.querySelector(".complete").onclick = () => {
+      tasks[i].done = !tasks[i].done;
+      saveTasks();
+      renderTasks();
+    };
+
+    // Edit
+    li.querySelector(".edit").onclick = () => {
+      editIndex = i;
+      editInput.value = tasks[i].text;
+      editModal.style.display = "flex";
+    };
+
+    // Delete
+    li.querySelector(".delete").onclick = () => {
+      deleteIndex = i;
+      deleteModal.style.display = "flex";
+    };
+
+    taskList.appendChild(li);
+  });
+
+  // Update progress
+  const doneCount = tasks.filter(t => t.done).length;
+  progressText.textContent = `${doneCount} of ${tasks.length} completed`;
+  progressFill.style.width = tasks.length ? (doneCount / tasks.length) * 100 + "%" : "0%";
 }
 
-#generateTimetable {
-  background: linear-gradient(45deg, #ff6f61, #ff9472);
-  color: #fff;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 12px;
-  font-size: 18px;
-  font-weight: 700;
-  margin-block-start: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-#generateTimetable:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.3);
-}
-
-#timetable {
-  margin-block-start: 25px;
-  overflow-x: auto;
-  padding: 15px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.9);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  max-inline-size: 100%;
-}
-
-body.dark #timetable {
-  background: rgba(0,0,0,0.8);
-  color: #f1f1f1;
-}
-
-#timetable h3 {
-  text-align: center;
-  font-size: 26px;
-  font-weight: 800;
-  margin-block-end: 15px;
-  color: #333;
-}
-
-body.dark #timetable h3 {
-  color: #e0e0e0;
-}
-
-.timetable-table {
-  border-collapse: collapse;
-  inline-size: 100%;
-  min-inline-size: 600px;
-}
-
-.timetable-table th,
-.timetable-table td {
-  border: 1px solid #888;
-  padding: 6px 8px;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.timetable-table th {
-  background: #ffb6c1;
-  color: #222;
-  font-weight: 700;
-}
-
-.timetable-table td:first-child {
-  background: #add8e6;
-  font-weight: 700;
-}
-
-body.dark .timetable-table th {
-  background: #555;
-  color: #000;
-}
-body.dark .timetable-table td:first-child {
-  background: #555;
-  color: #000;
-}
-
-.timetable-actions {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-block-end: 15px;
-  flex-wrap: wrap;
-}
-
-.timetable-actions button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  color: #fff;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease;
-}
-
-.timetable-actions button:hover {
-  transform: scale(1.05);
-}
-
-#saveImage {
-  background: linear-gradient(45deg, #43a047, #66bb6a);
-}
-
-#copyImage {
-  background: linear-gradient(45deg, #42a5f5, #478ed1);
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: var(--input-bg);
-  color: var(--text);
-  padding: 25px;
-  border-radius: 14px;
-  max-inline-size: 350px;
-  inline-size: 90%;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.modal-actions {
-  display: flex;
-  gap: 8px;
-  margin-block-start: 20px;
-}
-
-.save-btn{
-  background: var(--btn-save);
-  flex: 1;
-}
-
-.yes-btn {
-  background: var(--btn-yes);
-  flex: 1;
-}
-
-.cancel-btn {
-  background: var(--btn-cancel);
-  flex: 1;
-}
-
-canvas#confettiCanvas {
-  position: fixed;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  pointer-events: none;
-  inline-size: 100vw;
-  block-size: 100vh;
-  z-index: 9999;
-}
-
-@media (max-width: 600px) {
-  h1 {
-    font-size: 24px;
+// Add a task
+addBtn.onclick = () => {
+  const text = taskInput.value.trim();
+  if (!text) {
+    alert("Please enter a task");
+    return;
   }
-  button {
-    font-size: 14px;
-    padding: 10px;
-  }
-  .timetable-table th,
-  .timetable-table td {
-    font-size: 14px;
-    padding: 8px;
-  }
-}
 
+  const newTask = {
+    text: text,
+    date: taskDate.value,
+    cat: categoryInput.value,
+    done: false
+  };
+
+  tasks.push(newTask);
+  saveTasks();
+  renderTasks(); 
+
+  // Reset fields
+  taskInput.value = "";
+  taskDate.value = "";
+};
+
+// Edit modal
+saveEdit.onclick = () => {
+  if (editIndex !== null) {
+    tasks[editIndex].text = editInput.value.trim();
+    saveTasks();
+    renderTasks();
+  }
+  editModal.style.display = "none";
+};
+cancelEdit.onclick = () => (editModal.style.display = "none");
+
+// Delete modal
+confirmDelete.onclick = () => {
+  if (deleteIndex !== null) {
+    tasks.splice(deleteIndex, 1);
+    saveTasks();
+    renderTasks();
+  }
+  deleteModal.style.display = "none";
+};
+cancelDelete.onclick = () => (deleteModal.style.display = "none");
+
+// Filters
+searchInput.oninput = renderTasks;
+
+// Dark mode toggle
+themeSwitch.onchange = () => {
+  document.body.classList.toggle("dark", themeSwitch.checked);
+};
+
+// Generate timetable
+timetableBtn.onclick = () => {
+  timetableBtn.onclick = () => {
+  timetableDiv.classList.remove("hidden");
+  timetableTable.innerHTML = "";
+
+  const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  let header = `<tr><th>Time</th>${days.map(d=>`<th>${d}</th>`).join("")}</tr>`;
+  timetableTable.insertAdjacentHTML("beforeend", header);
+
+  for (let h = 0; h < 24; h++) {
+    let slot = ("0"+h).slice(-2)+":00";
+    let row = `<tr><td>${slot}</td>`;
+    days.forEach(day => {
+      const match = tasks.find(t => {
+        if (!t.date) return false;
+        const d = new Date(t.date);
+        return d.toLocaleDateString('en-US',{weekday:'long'})===day &&("0"+d.getHours()).slice(-2)+":00" === slot;
+      });
+      row += `<td>${match?match.text:""}</td>`;
+    });
+    row += `</tr>`;
+    timetableTable.insertAdjacentHTML("beforeend", row);
+  }
+};
+
+saveImageBtn.onclick = () => {
+  html2canvas(timetableDiv).then(canvas=>{
+    let link=document.createElement('a');
+    link.download="timetable.png";
+    link.href=canvas.toDataURL();
+    link.click();
+  });
+};
+
+copyImageBtn.onclick = async () => {
+  try {
+    const canvas = await html2canvas(timetableDiv);
+    const blob = await new Promise(res=>canvas.toBlob(res));
+    await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);
+    alert("Timetable copied!");
+  } catch(e){alert("Copy failed.");}
+};
+
+function triggerConfetti() {
+  const canvas = document.getElementById("confettiCanvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  canvas.style.display = "block";
+  const parts = Array.from({length:100},()=>({
+    x: Math.random()*canvas.width,
+    y: Math.random()*-canvas.height,
+    r: Math.random()*6+2,
+    dx: Math.random()*2-1,
+    dy: Math.random()*2+1,
+    color:`hsl(${Math.random()*360},70%,60%)`
+  }));
+  let frame=0;
+  (function anim(){
+    frame++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    parts.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color;
+      ctx.fill();
+      p.x+=p.dx; p.y+=p.dy;
+      if(p.y>canvas.height){p.y=-10; p.x=Math.random()*canvas.width;}
+    });
+    if(frame<120) requestAnimationFrame(anim);
+    else canvas.style.display="none";
+  })();
+// Initial render
+document.addEventListener("DOMContentLoaded", renderTasks);
+}
+}
